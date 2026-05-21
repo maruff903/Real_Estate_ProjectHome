@@ -5,7 +5,7 @@ namespace RealEstateHub.Application.DTOs.Listings;
 
 public class ListingDetailsDto
 {
-    public Guid Id { get; set; }
+    public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public PropertyType PropertyType { get; set; }
@@ -31,7 +31,7 @@ public class ListingDetailsDto
     public string? Address { get; set; }
     public decimal? Latitude { get; set; }
     public decimal? Longitude { get; set; }
-    public IReadOnlyList<ImageDto> Images { get; set; } = [];
+    public List<ImageDto> Images { get; set; } = [];
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }

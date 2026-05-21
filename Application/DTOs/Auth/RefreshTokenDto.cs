@@ -1,5 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace RealEstateHub.Application.DTOs.Auth;
 
-public record RefreshTokenDto([property: Required] string RefreshToken);
+public class RefreshTokenDto
+{
+    public string RefreshToken { get; set; } = string.Empty;
+}

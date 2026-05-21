@@ -58,7 +58,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "AuditLogs",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: true),
                     Action = table.Column<string>(type: "text", nullable: false),
                     EntityName = table.Column<string>(type: "text", nullable: false),
@@ -75,7 +76,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "BackgroundJobLogs",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     JobName = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
                     Message = table.Column<string>(type: "text", nullable: true),
@@ -91,7 +93,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -107,7 +110,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "Cities",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -122,7 +126,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "RefreshTokens",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     Token = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -244,9 +249,10 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "Districts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
-                    CityId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CityId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -266,7 +272,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "PropertyListings",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
                     PropertyType = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
@@ -287,8 +294,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                     HasFurniture = table.Column<bool>(type: "boolean", nullable: false),
                     Status = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     SellerId = table.Column<string>(type: "text", nullable: false),
-                    CityId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DistrictId = table.Column<Guid>(type: "uuid", nullable: true),
+                    CityId = table.Column<int>(type: "integer", nullable: false),
+                    DistrictId = table.Column<int>(type: "integer", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false)
@@ -314,10 +321,11 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "ContactRequests",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BuyerId = table.Column<string>(type: "text", nullable: false),
                     SellerId = table.Column<string>(type: "text", nullable: false),
-                    PropertyListingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PropertyListingId = table.Column<int>(type: "integer", nullable: false),
                     Message = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     PhoneNumber = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
                     Status = table.Column<string>(type: "character varying(40)", maxLength: 40, nullable: false),
@@ -338,9 +346,10 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "Favorites",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", nullable: false),
-                    PropertyListingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    PropertyListingId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -358,8 +367,9 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "PropertyFeatures",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PropertyListingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PropertyListingId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     Value = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true)
                 },
@@ -378,8 +388,9 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "PropertyImages",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PropertyListingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PropertyListingId = table.Column<int>(type: "integer", nullable: false),
                     ImageUrl = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     IsMain = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -399,8 +410,9 @@ namespace RealEstateHub.Infrastructure.Migrations
                 name: "PropertyLocations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    PropertyListingId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PropertyListingId = table.Column<int>(type: "integer", nullable: false),
                     Address = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Latitude = table.Column<decimal>(type: "numeric(10,7)", precision: 10, scale: 7, nullable: true),
                     Longitude = table.Column<decimal>(type: "numeric(10,7)", precision: 10, scale: 7, nullable: true)

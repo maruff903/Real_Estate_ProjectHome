@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateHub.Application.Interfaces.Services;
+using RealEstateHub.WebAPI.Extensions;
 
 namespace RealEstateHub.WebAPI.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 [AllowAnonymous]
-public class CitiesController(IReferenceDataService referenceDataService) : ApiControllerBase
+public class CitiesController(IReferenceDataService referenceDataService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken cancellationToken)
     {
-        return FromResponse(await referenceDataService.GetCitiesAsync(cancellationToken));
+        return this.FromResponse(await referenceDataService.GetCitiesAsync(cancellationToken));
     }
 }

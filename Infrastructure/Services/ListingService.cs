@@ -33,7 +33,7 @@ public class ListingService(IListingRepository listings, ICacheService cache) : 
         });
     }
 
-    public async Task<ApiResponse<ListingDetailsDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<ListingDetailsDto>> GetByIdAsync(int id, CancellationToken cancellationToken = default)
     {
         var listing = await cache.GetOrCreateAsync($"listing:{id}", () => listings.GetDetailsAsync(id, cancellationToken), TimeSpan.FromMinutes(5));
         if (listing is not null && !IsPublicStatus(listing.Status))
@@ -60,7 +60,7 @@ public class ListingService(IListingRepository listings, ICacheService cache) : 
         return ApiResponse<ListingDetailsDto>.Success(ToDetailsDto(created!), "Listing created and waiting for moderation.", 201);
     }
 
-    public async Task<ApiResponse<ListingDetailsDto>> UpdateAsync(Guid id, UpdateListingDto dto, string userId, bool isAdmin, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<ListingDetailsDto>> UpdateAsync(int id, UpdateListingDto dto, string userId, bool isAdmin, CancellationToken cancellationToken = default)
     {
         var listing = await listings.GetDetailsAsync(id, cancellationToken);
         if (listing is null)
@@ -81,7 +81,7 @@ public class ListingService(IListingRepository listings, ICacheService cache) : 
         return ApiResponse<ListingDetailsDto>.Success(ToDetailsDto(listing), "Listing updated.");
     }
 
-    public async Task<ApiResponse<object>> DeleteAsync(Guid id, string userId, bool isAdmin, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<object>> DeleteAsync(int id, string userId, bool isAdmin, CancellationToken cancellationToken = default)
     {
         var listing = await listings.GetByIdAsync(id, cancellationToken);
         if (listing is null)
@@ -103,7 +103,7 @@ public class ListingService(IListingRepository listings, ICacheService cache) : 
         return ApiResponse<object>.Success(null, "Listing deleted.");
     }
 
-    public async Task<ApiResponse<object>> ChangeStatusAsync(Guid id, ChangeListingStatusDto dto, string userId, bool isAdmin, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<object>> ChangeStatusAsync(int id, ChangeListingStatusDto dto, string userId, bool isAdmin, CancellationToken cancellationToken = default)
     {
         var listing = await listings.GetByIdAsync(id, cancellationToken);
         if (listing is null)
@@ -222,19 +222,21 @@ public class ListingService(IListingRepository listings, ICacheService cache) : 
 
     private static ListingListDto ToListDto(PropertyListing listing)
     {
-        return new ListingListDto(
-            listing.Id,
-            listing.Title,
-            listing.Price,
-            listing.MonthlyPrice,
-            listing.Area,
-            listing.PropertyType,
-            listing.ListingType,
-            listing.Status,
-            listing.City?.Name ?? string.Empty,
-            listing.District?.Name,
-            listing.Images.FirstOrDefault(x => x.IsMain)?.ImageUrl ?? listing.Images.FirstOrDefault()?.ImageUrl,
-            listing.CreatedAt);
+        return new ListingListDto
+        {
+            Id = listing.Id,
+            Title = listing.Title,
+            Price = listing.Price,
+            MonthlyPrice = listing.MonthlyPrice,
+            Area = listing.Area,
+            PropertyType = listing.PropertyType,
+            ListingType = listing.ListingType,
+            Status = listing.Status,
+            CityName = listing.City?.Name ?? string.Empty,
+            DistrictName = listing.District?.Name,
+            MainImageUrl = listing.Images.FirstOrDefault(x => x.IsMain)?.ImageUrl ?? listing.Images.FirstOrDefault()?.ImageUrl,
+            CreatedAt = listing.CreatedAt
+        };
     }
 
     private static ListingDetailsDto ToDetailsDto(PropertyListing listing)
@@ -267,7 +269,7 @@ public class ListingService(IListingRepository listings, ICacheService cache) : 
             Address = listing.Location?.Address,
             Latitude = listing.Location?.Latitude,
             Longitude = listing.Location?.Longitude,
-            Images = listing.Images.Select(x => new ImageDto(x.Id, x.ImageUrl, x.IsMain)).ToList(),
+            Images = listing.Images.Select(x => new ImageDto { Id = x.Id, ImageUrl = x.ImageUrl, IsMain = x.IsMain }).ToList(),
             CreatedAt = listing.CreatedAt,
             UpdatedAt = listing.UpdatedAt
         };

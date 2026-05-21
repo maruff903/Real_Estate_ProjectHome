@@ -5,10 +5,30 @@ using RealEstateHub.Infrastructure.Data;
 
 namespace RealEstateHub.Infrastructure.Repositories;
 
-public class FavoriteRepository(AppDbContext dbContext) : GenericRepository<Favorite>(dbContext), IFavoriteRepository
+public class FavoriteRepository(AppDbContext dbContext) : IFavoriteRepository
 {
-    public Task<Favorite?> GetByUserAndListingAsync(string userId, Guid listingId, CancellationToken cancellationToken = default)
+    public IQueryable<Favorite> Query()
     {
-        return DbContext.Favorites.FirstOrDefaultAsync(x => x.UserId == userId && x.PropertyListingId == listingId, cancellationToken);
+        return dbContext.Favorites.AsQueryable();
+    }
+
+    public Task<Favorite?> GetByUserAndListingAsync(string userId, int listingId, CancellationToken cancellationToken = default)
+    {
+        return dbContext.Favorites.FirstOrDefaultAsync(x => x.UserId == userId && x.PropertyListingId == listingId, cancellationToken);
+    }
+
+    public Task AddAsync(Favorite favorite, CancellationToken cancellationToken = default)
+    {
+        return dbContext.Favorites.AddAsync(favorite, cancellationToken).AsTask();
+    }
+
+    public void Delete(Favorite favorite)
+    {
+        dbContext.Favorites.Remove(favorite);
+    }
+
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return dbContext.SaveChangesAsync(cancellationToken);
     }
 }

@@ -22,14 +22,16 @@ public class AdminService(
         var stats = await cache.GetOrCreateAsync("dashboard-stats", async () =>
         {
             var query = listings.Query().AsNoTracking();
-            return new DashboardStatsDto(
-                await query.CountAsync(cancellationToken),
-                await query.CountAsync(x => x.Status == ListingStatus.Sold, cancellationToken),
-                await query.CountAsync(x => x.Status == ListingStatus.Rented, cancellationToken),
-                await users.CountUsersInRoleAsync(UserRole.Seller.ToString(), cancellationToken),
-                await users.CountUsersInRoleAsync(UserRole.Buyer.ToString(), cancellationToken),
-                await query.CountAsync(x => x.Status == ListingStatus.Pending, cancellationToken),
-                await query.CountAsync(x => x.Status == ListingStatus.Available || x.Status == ListingStatus.Approved, cancellationToken));
+            return new DashboardStatsDto
+            {
+                TotalListings = await query.CountAsync(cancellationToken),
+                SoldListings = await query.CountAsync(x => x.Status == ListingStatus.Sold, cancellationToken),
+                RentedListings = await query.CountAsync(x => x.Status == ListingStatus.Rented, cancellationToken),
+                SellerCount = await users.CountUsersInRoleAsync(UserRole.Seller.ToString(), cancellationToken),
+                BuyerCount = await users.CountUsersInRoleAsync(UserRole.Buyer.ToString(), cancellationToken),
+                PendingListings = await query.CountAsync(x => x.Status == ListingStatus.Pending, cancellationToken),
+                ActiveListings = await query.CountAsync(x => x.Status == ListingStatus.Available || x.Status == ListingStatus.Approved, cancellationToken)
+            };
         }, TimeSpan.FromMinutes(2));
 
         return ApiResponse<DashboardStatsDto>.Success(stats);
@@ -48,7 +50,15 @@ public class AdminService(
         foreach (var user in usersPage)
         {
             var role = (await userManager.GetRolesAsync(user)).FirstOrDefault() ?? string.Empty;
-            items.Add(new UserManagementDto(user.Id, user.FullName, user.Email ?? string.Empty, role, user.IsBlocked, user.CreatedAt));
+            items.Add(new UserManagementDto
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email ?? string.Empty,
+                Role = role,
+                IsBlocked = user.IsBlocked,
+                CreatedAt = user.CreatedAt
+            });
         }
 
         return ApiResponse<PagedResponse<UserManagementDto>>.Success(new PagedResponse<UserManagementDto>
@@ -73,7 +83,7 @@ public class AdminService(
         return ApiResponse<object>.Success(null, isBlocked ? "User blocked." : "User unblocked.");
     }
 
-    public async Task<ApiResponse<object>> ModerateListingAsync(Guid id, ChangeListingStatusDto dto, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<object>> ModerateListingAsync(int id, ChangeListingStatusDto dto, CancellationToken cancellationToken = default)
     {
         var listing = await listings.GetByIdAsync(id, cancellationToken);
         if (listing is null)

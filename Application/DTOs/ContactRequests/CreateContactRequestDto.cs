@@ -1,3 +1,11 @@
 namespace RealEstateHub.Application.DTOs.ContactRequests;
 
-public record CreateContactRequestDto(Guid PropertyListingId, string Message, string PhoneNumber);
+
+public class CreateContactRequestDto
+{
+    public int PropertyListingId { get; set; }
+
+    public string Message { get; set; } = string.Empty;
+
+    public string PhoneNumber { get; set; } = string.Empty;
+}

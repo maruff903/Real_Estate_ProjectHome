@@ -7,7 +7,7 @@ public class ContactRequest : BaseEntity
 {
     public string BuyerId { get; set; } = string.Empty;
     public string SellerId { get; set; } = string.Empty;
-    public Guid PropertyListingId { get; set; }
+    public int PropertyListingId { get; set; }
     public string Message { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;
     public ContactRequestStatus Status { get; set; } = ContactRequestStatus.New;

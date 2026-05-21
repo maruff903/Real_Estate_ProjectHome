@@ -4,8 +4,12 @@ namespace RealEstateHub.Application.Interfaces.Services;
 
 public interface IReferenceDataService
 {
-    Task<ApiResponse<IReadOnlyList<ReferenceItemDto>>> GetCitiesAsync(CancellationToken cancellationToken = default);
-    Task<ApiResponse<IReadOnlyList<ReferenceItemDto>>> GetDistrictsAsync(Guid? cityId, CancellationToken cancellationToken = default);
+    Task<ApiResponse<List<ReferenceItemDto>>> GetCitiesAsync(CancellationToken cancellationToken = default);
+    Task<ApiResponse<List<ReferenceItemDto>>> GetDistrictsAsync(int? cityId, CancellationToken cancellationToken = default);
 }
 
-public record ReferenceItemDto(Guid Id, string Name);
+public class ReferenceItemDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+}

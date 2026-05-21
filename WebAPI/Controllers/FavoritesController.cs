@@ -1,27 +1,30 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateHub.Application.Interfaces.Services;
+using RealEstateHub.WebAPI.Extensions;
 
 namespace RealEstateHub.WebAPI.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 [Authorize(Roles = "Buyer,Admin")]
-public class FavoritesController(IFavoriteService favoriteService) : ApiControllerBase
+public class FavoritesController(IFavoriteService favoriteService) : ControllerBase
 {
     [HttpGet("mine")]
     public async Task<IActionResult> Mine(CancellationToken cancellationToken)
     {
-        return FromResponse(await favoriteService.GetMineAsync(UserId, cancellationToken));
+        return this.FromResponse(await favoriteService.GetMineAsync(User.GetUserId(), cancellationToken));
     }
 
-    [HttpPost("{listingId:guid}")]
-    public async Task<IActionResult> Add(Guid listingId, CancellationToken cancellationToken)
+    [HttpPost("{listingId:int}")]
+    public async Task<IActionResult> Add(int listingId, CancellationToken cancellationToken)
     {
-        return FromResponse(await favoriteService.AddAsync(listingId, UserId, cancellationToken));
+        return this.FromResponse(await favoriteService.AddAsync(listingId, User.GetUserId(), cancellationToken));
     }
 
-    [HttpDelete("{listingId:guid}")]
-    public async Task<IActionResult> Remove(Guid listingId, CancellationToken cancellationToken)
+    [HttpDelete("{listingId:int}")]
+    public async Task<IActionResult> Remove(int listingId, CancellationToken cancellationToken)
     {
-        return FromResponse(await favoriteService.RemoveAsync(listingId, UserId, cancellationToken));
+        return this.FromResponse(await favoriteService.RemoveAsync(listingId, User.GetUserId(), cancellationToken));
     }
 }

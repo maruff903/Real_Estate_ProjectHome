@@ -1,3 +1,8 @@
 namespace RealEstateHub.Application.DTOs.Images;
 
-public record ImageDto(Guid Id, string ImageUrl, bool IsMain);
+public class ImageDto
+{
+    public int Id { get; set; }
+    public string ImageUrl { get; set; } = string.Empty;
+    public bool IsMain { get; set; }
+}

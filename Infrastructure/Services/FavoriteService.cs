@@ -9,7 +9,7 @@ namespace RealEstateHub.Infrastructure.Services;
 
 public class FavoriteService(IFavoriteRepository favorites, IListingRepository listings) : IFavoriteService
 {
-    public async Task<ApiResponse<object>> AddAsync(Guid listingId, string userId, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<object>> AddAsync(int listingId, string userId, CancellationToken cancellationToken = default)
     {
         if (await listings.GetByIdAsync(listingId, cancellationToken) is null)
         {
@@ -26,7 +26,7 @@ public class FavoriteService(IFavoriteRepository favorites, IListingRepository l
         return ApiResponse<object>.Success(null, "Added to favorites.", 201);
     }
 
-    public async Task<ApiResponse<object>> RemoveAsync(Guid listingId, string userId, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<object>> RemoveAsync(int listingId, string userId, CancellationToken cancellationToken = default)
     {
         var favorite = await favorites.GetByUserAndListingAsync(userId, listingId, cancellationToken);
         if (favorite is null)
@@ -39,7 +39,7 @@ public class FavoriteService(IFavoriteRepository favorites, IListingRepository l
         return ApiResponse<object>.Success(null, "Removed from favorites.");
     }
 
-    public async Task<ApiResponse<IReadOnlyList<FavoriteDto>>> GetMineAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<List<FavoriteDto>>> GetMineAsync(string userId, CancellationToken cancellationToken = default)
     {
         var favoritesList = await favorites.Query()
             .AsNoTracking()
@@ -49,14 +49,16 @@ public class FavoriteService(IFavoriteRepository favorites, IListingRepository l
             .OrderByDescending(x => x.CreatedAt)
             .ToListAsync(cancellationToken);
 
-        var items = favoritesList.Select(x => new FavoriteDto(
-                x.Id,
-                x.PropertyListingId,
-                x.PropertyListing!.Title,
-                x.PropertyListing.Images.FirstOrDefault(i => i.IsMain)?.ImageUrl ?? x.PropertyListing.Images.FirstOrDefault()?.ImageUrl,
-                x.CreatedAt))
+        var items = favoritesList.Select(x => new FavoriteDto
+            {
+                Id = x.Id,
+                PropertyListingId = x.PropertyListingId,
+                Title = x.PropertyListing!.Title,
+                MainImageUrl = x.PropertyListing.Images.FirstOrDefault(i => i.IsMain)?.ImageUrl ?? x.PropertyListing.Images.FirstOrDefault()?.ImageUrl,
+                CreatedAt = x.CreatedAt
+            })
             .ToList();
 
-        return ApiResponse<IReadOnlyList<FavoriteDto>>.Success(items);
+        return ApiResponse<List<FavoriteDto>>.Success(items);
     }
 }

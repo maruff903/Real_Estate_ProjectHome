@@ -131,7 +131,16 @@ public class AuthService(
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        return new AuthResponseDto(user.Id, user.FullName, user.Email ?? string.Empty, role, accessToken, refreshToken, expiresAt);
+        return new AuthResponseDto
+        {
+            UserId = user.Id,
+            FullName = user.FullName,
+            Email = user.Email ?? string.Empty,
+            Role = role,
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            ExpiresAt = expiresAt
+        };
     }
 
     private string CreateAccessToken(AppUser user, string role, DateTime expiresAt)

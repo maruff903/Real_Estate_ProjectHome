@@ -32,7 +32,7 @@ public class ContactRequestService(IContactRequestRepository requests, IListingR
         return ApiResponse<ContactRequestDto>.Success(ToDto(request, listing.Title), "Request sent.", 201);
     }
 
-    public async Task<ApiResponse<IReadOnlyList<ContactRequestDto>>> GetForSellerAsync(string sellerId, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<List<ContactRequestDto>>> GetForSellerAsync(string sellerId, CancellationToken cancellationToken = default)
     {
         var items = await requests.Query()
             .AsNoTracking()
@@ -42,10 +42,10 @@ public class ContactRequestService(IContactRequestRepository requests, IListingR
             .Select(x => ToDto(x, x.PropertyListing!.Title))
             .ToListAsync(cancellationToken);
 
-        return ApiResponse<IReadOnlyList<ContactRequestDto>>.Success(items);
+        return ApiResponse<List<ContactRequestDto>>.Success(items);
     }
 
-    public async Task<ApiResponse<IReadOnlyList<ContactRequestDto>>> GetAllAsync(CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<List<ContactRequestDto>>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var items = await requests.Query()
             .AsNoTracking()
@@ -54,20 +54,22 @@ public class ContactRequestService(IContactRequestRepository requests, IListingR
             .Select(x => ToDto(x, x.PropertyListing!.Title))
             .ToListAsync(cancellationToken);
 
-        return ApiResponse<IReadOnlyList<ContactRequestDto>>.Success(items);
+        return ApiResponse<List<ContactRequestDto>>.Success(items);
     }
 
     private static ContactRequestDto ToDto(ContactRequest request, string listingTitle)
     {
-        return new ContactRequestDto(
-            request.Id,
-            request.PropertyListingId,
-            listingTitle,
-            request.BuyerId,
-            request.SellerId,
-            request.Message,
-            request.PhoneNumber,
-            request.Status,
-            request.CreatedAt);
+        return new ContactRequestDto
+        {
+            Id = request.Id,
+            PropertyListingId = request.PropertyListingId,
+            ListingTitle = listingTitle,
+            BuyerId = request.BuyerId,
+            SellerId = request.SellerId,
+            Message = request.Message,
+            PhoneNumber = request.PhoneNumber,
+            Status = request.Status,
+            CreatedAt = request.CreatedAt
+        };
     }
 }

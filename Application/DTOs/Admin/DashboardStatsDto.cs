@@ -1,10 +1,19 @@
 namespace RealEstateHub.Application.DTOs.Admin;
 
-public record DashboardStatsDto(
-    int TotalListings,
-    int SoldListings,
-    int RentedListings,
-    int SellerCount,
-    int BuyerCount,
-    int PendingListings,
-    int ActiveListings);
+
+public class DashboardStatsDto
+{
+    public int TotalListings { get; set; }
+
+    public int SoldListings { get; set; }
+
+    public int RentedListings { get; set; }
+
+    public int SellerCount { get; set; }
+
+    public int BuyerCount { get; set; }
+
+    public int PendingListings { get; set; }
+
+    public int ActiveListings { get; set; }
+}

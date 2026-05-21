@@ -1,7 +1,9 @@
 using Microsoft.OpenApi;
 using Microsoft.AspNetCore.DataProtection;
+using RealEstateHub.Application;
 using RealEstateHub.Infrastructure;
 using RealEstateHub.Infrastructure.Data;
+using RealEstateHub.WebAPI.Filters;
 using RealEstateHub.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +12,12 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-builder.Services.AddControllers();
+builder.Services.AddApplication();
+builder.Services.AddScoped<FluentValidationFilter>();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.AddService<FluentValidationFilter>();
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
@@ -26,9 +33,7 @@ builder.Services.AddCors(options =>
         }
     });
 });
-builder.Services.AddDataProtection()
-    .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(builder.Environment.ContentRootPath, "DataProtectionKeys")))
-    .SetApplicationName("RealEstateHub");
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

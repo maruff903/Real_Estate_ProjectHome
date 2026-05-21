@@ -2,22 +2,25 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RealEstateHub.Application.DTOs.Listings;
 using RealEstateHub.Application.Interfaces.Services;
+using RealEstateHub.WebAPI.Extensions;
 
 namespace RealEstateHub.WebAPI.Controllers;
 
-public class ListingsController(IListingService listingService) : ApiControllerBase
+[ApiController]
+[Route("api/[controller]")]
+public class ListingsController(IListingService listingService) : ControllerBase
 {
     [HttpGet]
     [AllowAnonymous]
     public async Task<IActionResult> GetListings([FromQuery] ListingFilterDto filter, CancellationToken cancellationToken)
     {
-        return FromResponse(await listingService.GetListingsAsync(filter, cancellationToken));
+        return this.FromResponse(await listingService.GetListingsAsync(filter, cancellationToken));
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id:int}")]
     [AllowAnonymous]
-    public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
     {
-        return FromResponse(await listingService.GetByIdAsync(id, cancellationToken));
+        return this.FromResponse(await listingService.GetByIdAsync(id, cancellationToken));
     }
 }

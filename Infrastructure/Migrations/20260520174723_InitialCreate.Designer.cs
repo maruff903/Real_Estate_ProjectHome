@@ -12,7 +12,7 @@ using RealEstateHub.Infrastructure.Data;
 namespace RealEstateHub.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260519184921_InitialCreate")]
+    [Migration("20260520174723_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -159,9 +159,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.AuditLog", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Action")
                         .IsRequired()
@@ -190,9 +192,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.BackgroundJobLog", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("timestamp with time zone");
@@ -218,9 +222,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.Category", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -246,9 +252,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.City", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -274,9 +282,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.ContactRequest", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BuyerId")
                         .IsRequired()
@@ -295,8 +305,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
-                    b.Property<Guid>("PropertyListingId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("PropertyListingId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("SellerId")
                         .IsRequired()
@@ -316,12 +326,14 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.District", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
 
-                    b.Property<Guid>("CityId")
-                        .HasColumnType("uuid");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -346,15 +358,17 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.Favorite", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PropertyListingId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("PropertyListingId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -372,17 +386,19 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.PropertyFeature", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("character varying(120)");
 
-                    b.Property<Guid>("PropertyListingId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("PropertyListingId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Value")
                         .HasMaxLength(500)
@@ -397,9 +413,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.PropertyImage", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -412,8 +430,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                     b.Property<bool>("IsMain")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("PropertyListingId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("PropertyListingId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -424,9 +442,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.PropertyListing", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Area")
                         .HasPrecision(18, 2)
@@ -438,8 +458,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                     b.Property<string>("BuildingBlock")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("CityId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("CityId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -449,8 +469,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("character varying(4000)");
 
-                    b.Property<Guid?>("DistrictId")
-                        .HasColumnType("uuid");
+                    b.Property<int?>("DistrictId")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("Floor")
                         .HasColumnType("integer");
@@ -529,9 +549,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.PropertyLocation", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -546,8 +568,8 @@ namespace RealEstateHub.Infrastructure.Migrations
                         .HasPrecision(10, 7)
                         .HasColumnType("numeric(10,7)");
 
-                    b.Property<Guid>("PropertyListingId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("PropertyListingId")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -559,9 +581,11 @@ namespace RealEstateHub.Infrastructure.Migrations
 
             modelBuilder.Entity("RealEstateHub.Domain.Entities.RefreshToken", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");

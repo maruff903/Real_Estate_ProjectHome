@@ -1,5 +1,6 @@
 using RealEstateHub.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Hosting;
+using System.Security.Cryptography;
 
 namespace RealEstateHub.Infrastructure.Services;
 
@@ -7,7 +8,7 @@ public class LocalFileService(IWebHostEnvironment environment) : IFileService
 {
     public async Task<string> SaveImageAsync(Stream image, string fileName, CancellationToken cancellationToken = default)
     {
-        var safeFileName = $"{Guid.NewGuid():N}{Path.GetExtension(fileName)}";
+        var safeFileName = $"{Convert.ToHexString(RandomNumberGenerator.GetBytes(16)).ToLowerInvariant()}{Path.GetExtension(fileName)}";
         var webRoot = environment.WebRootPath;
         if (string.IsNullOrWhiteSpace(webRoot))
         {

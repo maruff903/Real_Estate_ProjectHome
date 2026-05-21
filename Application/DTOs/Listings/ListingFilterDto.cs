@@ -7,8 +7,8 @@ public class ListingFilterDto : PaginationQuery
 {
     public PropertyType? PropertyType { get; set; }
     public ListingType? ListingType { get; set; }
-    public Guid? CityId { get; set; }
-    public Guid? DistrictId { get; set; }
+    public int? CityId { get; set; }
+    public int? DistrictId { get; set; }
     public decimal? MinPrice { get; set; }
     public decimal? MaxPrice { get; set; }
     public decimal? MinArea { get; set; }

@@ -2,13 +2,24 @@ using RealEstateHub.Domain.Enums;
 
 namespace RealEstateHub.Application.DTOs.ContactRequests;
 
-public record ContactRequestDto(
-    Guid Id,
-    Guid PropertyListingId,
-    string ListingTitle,
-    string BuyerId,
-    string SellerId,
-    string Message,
-    string PhoneNumber,
-    ContactRequestStatus Status,
-    DateTime CreatedAt);
+
+public class ContactRequestDto
+{
+    public int Id { get; set; }
+
+    public int PropertyListingId { get; set; }
+
+    public string ListingTitle { get; set; } = string.Empty;
+
+    public string BuyerId { get; set; } = string.Empty;
+
+    public string SellerId { get; set; } = string.Empty;
+
+    public string Message { get; set; } = string.Empty;
+
+    public string PhoneNumber { get; set; } = string.Empty;
+
+    public ContactRequestStatus Status { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+}

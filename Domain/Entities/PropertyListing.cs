@@ -25,8 +25,8 @@ public class PropertyListing : AuditableEntity
     public bool HasFurniture { get; set; }
     public ListingStatus Status { get; set; } = ListingStatus.Pending;
     public string SellerId { get; set; } = string.Empty;
-    public Guid CityId { get; set; }
-    public Guid? DistrictId { get; set; }
+    public int CityId { get; set; }
+    public int? DistrictId { get; set; }
 
     public City? City { get; set; }
     public District? District { get; set; }

@@ -65,7 +65,6 @@ public static class DependencyInjection
         services.AddMemoryCache();
         services.AddHttpContextAccessor();
 
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IListingRepository, ListingRepository>();
         services.AddScoped<IFavoriteRepository, FavoriteRepository>();
         services.AddScoped<IContactRequestRepository, ContactRequestRepository>();
